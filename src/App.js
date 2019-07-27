@@ -11,21 +11,24 @@ class App extends Component {
   
   componentDidMount() {
     axios.get("http://localhost:3000/todos.json").then((response) => {
-      console.log(response)
       this.setState({ todos: response.data.todos })
     })
-    console.log("asdf - componentDidMount")
+    //console.log("asdf - componentDidMount")
   }
 
+  pushResponse = (todo) => {
+    this.state.todos.push(todo)
+    this.setState({todos: this.state.todos})
+    // set state at the end.  instatiate a variable to do all of the work on
+  }
 
   render() {
-    console.log("asdf - render")
     return (
       <div>
         <div>
           <h1>Web ToDo List</h1>
         </div>
-          <InputWidget placeholder="New Todo"/>
+          <InputWidget placeholder="New Todo" onInputResponse={ this.pushResponse }/>
         <div>
           <ul>
             { this.state.todos.map((todo) => {
@@ -43,7 +46,7 @@ class App extends Component {
                       </div>
                     )}
                   )}
-                  <InputWidget placeholder="New Comment"/>  
+                  <InputWidget placeholder="New Comment" />  
                 </li>
               )}
             )}
@@ -60,12 +63,6 @@ class App extends Component {
 export default App;
 
 
-// Single input field for new todos
-
-// Container showing existing todos
-
-// Make table for like/disliked/agnostic
-
-// Create a post action for todos, 
+// cant map over user name from create
 
 
