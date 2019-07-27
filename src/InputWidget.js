@@ -14,6 +14,7 @@ class InputWidget extends Component {
     axios.post("http://localhost:3000/todos.json", { todo: { name: this.state.value, user_id: 1} }).then((response) => {
       this.handleResponse(response.data.todo)
     })
+    this.setState({ value: ''})
   }
  
   handleResponse = (todo) => {
@@ -25,7 +26,6 @@ class InputWidget extends Component {
 
   handleInput = (e) => {
     this.setState({ value: e.target.value })
-    console.log(e.target.value)
   }
 
   render() {
