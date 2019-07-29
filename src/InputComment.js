@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import axios from "axios";
 
-class InputWidget extends Component {
+
+class InputComment extends Component {
   constructor(props) {
     super(props)
     this.state = { value: '' }
@@ -11,16 +12,21 @@ class InputWidget extends Component {
   // set the post action via axios to write the input
   
   handleCreate = () => {
-    axios.post("http://localhost:3000/todos.json", { todo: { name: this.state.value, user_id: 1} }).then((response) => {
-      this.handleResponse(response.data.todo)
+    axios.post(`http://localhost:3000/comments.json`, { comment: { text: this.state.value, todo_id: 1, user_id: 1} }).then((response) => {
+      this.handleResponse(response.data.comment)
+      console.log(response.data.comment)
     })
-    this.setState({ value: ''})
+    this.setState( { value: ''} )
   }
  
-  handleResponse = (todo) => {
-    this.props.onTodoInputResponse(todo)
+  handleResponse = (comment) => {
+    this.props.onCommentInputResponse(comment)
   }
+ 
+  //new function to log response
   
+
+
   handleInput = (e) => {
     this.setState({ value: e.target.value })
   }
@@ -35,4 +41,4 @@ class InputWidget extends Component {
   }
 }
 
-export default InputWidget;
+export default InputComment;

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from "axios";
 import InputWidget from "./InputWidget";
+import InputComment from "./InputComment";
 
 
 
@@ -23,6 +24,10 @@ class App extends Component {
     // set state at the end.  instatiate a variable to do all of the
   }
 
+  commentResponse = () => {
+    console.log("asdf")
+  }
+
   completeTodo = (id) => {
     axios.patch(`http://localhost:3000/todos/${ id }.json`, { todo: { is_complete: true } }).then((response) => {
     console.log(response.data.todo)  
@@ -30,12 +35,14 @@ class App extends Component {
       todos.map((todo, index) => {
         if (todo.id === id) {
           todos[index] = response.data.todo
-        }
+          return console.log(todo)
+        } else return null
       }) 
       this.setState({todos: todos})
     })
     console.log(id)
   }
+  // THis should become a button
 
   render() {
     return (
@@ -43,7 +50,7 @@ class App extends Component {
         <div>
           <h1>Web ToDo List</h1>
         </div>
-          <InputWidget placeholder="New Todo" onInputResponse={ this.pushResponse }/>
+          <InputWidget placeholder="New Todo" onTodoInputResponse={ this.handleResponse }/>
         <div>
           <ul>
             { this.state.todos.map((todo) => {
@@ -62,9 +69,9 @@ class App extends Component {
                         </div>
                       )}
                     )}
-                    <InputWidget placeholder="New Comment" />  
+                    <InputComment placeholder="New Comment" onCommentInputResponse= { this.commentResponse }/>  
                   </li>
-                )}
+                )} else return null
               } 
             )}
           </ul>
