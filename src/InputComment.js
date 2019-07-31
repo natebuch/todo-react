@@ -10,11 +10,12 @@ class InputComment extends Component {
   }
 
   // set the post action via axios to write the input
+
+ 
   
   handleCreate = () => {
-    axios.post(`http://localhost:3000/comments.json`, { comment: { text: this.state.value, todo_id: 1, user_id: 1} }).then((response) => {
+    axios.post(`http://localhost:3000/comments.json`, { comment: { text: this.state.value, todo_id: this.props.todoId, user_id: 1} }).then((response) => {
       this.handleResponse(response.data.comment)
-      console.log(response.data.comment)
     })
     this.setState( { value: ''} )
   }

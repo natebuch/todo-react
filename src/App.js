@@ -17,16 +17,26 @@ class App extends Component {
     })
   }
 
-  pushResponse = (todo) => {
+  pushResponseTodo = (todo) => {
     let todos = Object.assign([], this.state.todos)
     todos.unshift(todo)
     this.setState({todos: todos})
     // set state at the end.  instatiate a variable to do all of the
   }
 
-  commentResponse = () => {
-    console.log("asdf")
+  pushReponseComment = (comment) => {
+    let commentedTodo = this.state.todos.filter(todo => comment.todo_id === todo.id)[0]
+    commentedTodo.comments.unshift(comment)
+
+    let todos = this.state.todos
+      todos.map((todo, index) => {
+        if (todo.id === comment.todo_id) {
+          todos[index] = commentedTodo
+        }
+      })
+      this.setState({todos: todos})
   }
+
 
   completeTodo = (id) => {
     axios.patch(`http://localhost:3000/todos/${ id }.json`, { todo: { is_complete: true } }).then((response) => {
@@ -35,12 +45,11 @@ class App extends Component {
       todos.map((todo, index) => {
         if (todo.id === id) {
           todos[index] = response.data.todo
-          return console.log(todo)
-        } else return null
+        } 
       }) 
       this.setState({todos: todos})
     })
-    console.log(id)
+    return true
   }
   // THis should become a button
 
@@ -50,7 +59,7 @@ class App extends Component {
         <div>
           <h1>Web ToDo List</h1>
         </div>
-          <InputWidget placeholder="New Todo" onTodoInputResponse={ this.handleResponse }/>
+          <InputWidget placeholder="New Todo" onTodoInput={ this.pushResponseTodo } />
         <div>
           <ul>
             { this.state.todos.map((todo) => {
@@ -69,7 +78,7 @@ class App extends Component {
                         </div>
                       )}
                     )}
-                    <InputComment placeholder="New Comment" onCommentInputResponse= { this.commentResponse }/>  
+                    <InputComment placeholder="New Comment" onCommentInputResponse={ this.pushReponseComment } todoId={ todo.id }/>  
                   </li>
                 )} else return null
               } 

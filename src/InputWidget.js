@@ -18,7 +18,7 @@ class InputWidget extends Component {
   }
  
   handleResponse = (todo) => {
-    this.props.onTodoInputResponse(todo)
+    this.props.onTodoInput(todo)
   }
   
   handleInput = (e) => {
