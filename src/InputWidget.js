@@ -10,11 +10,16 @@ class InputWidget extends Component {
 
   // set the post action via axios to write the input
   
+
   handleCreate = () => {
-    axios.post("http://localhost:3000/todos.json", { todo: { name: this.state.value, user_id: 1} }).then((response) => {
-      this.handleResponse(response.data.todo)
-    })
-    this.setState({ value: ''})
+    if (this.state.value.length > 0) {
+      axios.post("http://localhost:3000/todos.json", { todo: { name: this.state.value, user_id: 1} }).then((response) => {
+        this.handleResponse(response.data.todo)
+      })
+      this.setState({ value: ''})
+    } else {
+      window.alert("Todo cannot be empty")
+    }
   }
  
   handleResponse = (todo) => {

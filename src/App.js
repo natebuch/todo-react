@@ -3,7 +3,18 @@ import axios from "axios";
 import InputWidget from "./InputWidget";
 import InputComment from "./InputComment";
 
+const liked = 1
+const disliked = 2
+const likedStyle = {
+  color: 'green'
+}
+const dislikedStyle = {
+  color: 'red'
+}
 
+const agnosticStyle  = {
+  color: 'black'
+}
 
 class App extends Component {
   constructor(props) {
@@ -34,7 +45,7 @@ class App extends Component {
           todos[index] = commentedTodo
         }
       })
-      this.setState({todos: todos})
+      this.setState({todos: todos}) 
   }
 
 
@@ -51,7 +62,26 @@ class App extends Component {
     })
     return true
   }
-  // THis should become a button
+
+  handleStatus = (status, id) => {  
+    // IDentify what todo im on via response ... need to get posistion of the todo in the state
+    // Identify the comment that is being updated on that todo via response ... need to get position of comment in todo comments
+    axios.patch(`http://localhost:3000/comments/${ id }.json`, { comment: {status: status }}).then((response) => {  
+      let todos = this.state.todos
+      todos.map((todo) => {
+        if (todo.id === response.data.comment.todo_id) {
+          todo.comments.map((comment, index) => {
+            if (comment.id === id) {
+              todo.comments[index] = response.data.comment
+            }
+          })
+        }
+      })
+    this.setState({ todos: todos })
+    })
+  }
+  // HOW TO REFRESH ON LIKE?DISLIKE of comment
+
 
   render() {
     return (
@@ -72,9 +102,10 @@ class App extends Component {
                     { todo.comments.map((comment,index) => {
                       return ( 
                         <div key={ index }>  
-                          <p>{ comment.text }</p>
-                          <button>Like Comment</button>
-                          <button>Dislike Comment</button>              
+                          <h4>{ comment.status }</h4>
+                          <p style={ comment.status === 'liked' ? likedStyle : comment.status === 'disliked' ? dislikedStyle : agnosticStyle }>{ comment.text }</p>
+                          <button onClick={ () => this.handleStatus(liked, comment.id) }>Like Comment</button>
+                          <button onClick={ () => this.handleStatus(disliked, comment.id) }>Dislike Comment</button>              
                         </div>
                       )}
                     )}
