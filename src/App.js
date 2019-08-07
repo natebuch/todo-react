@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from "axios";
 import InputWidget from "./InputWidget";
 import InputComment from "./InputComment";
+import "./App.css";
 
 const liked = 1
 const disliked = 2
@@ -78,10 +79,10 @@ class App extends Component {
         }
       })
     this.setState({ todos: todos })
+    console.log(this.state)
     })
   }
   // HOW TO REFRESH ON LIKE?DISLIKE of comment
-
 
   render() {
     return (
@@ -101,9 +102,8 @@ class App extends Component {
                     <p>Author: { todo.user_first_name + ' ' + todo.user_last_name }</p>
                     { todo.comments.map((comment,index) => {
                       return ( 
-                        <div key={ index }>  
-                          <h4>{ comment.status }</h4>
-                          <p style={ comment.status === 'liked' ? likedStyle : comment.status === 'disliked' ? dislikedStyle : agnosticStyle }>{ comment.text }</p>
+                        <div key={ index }> 
+                          <p className="comment" style={ comment.status === 'liked' ? likedStyle : comment.status === 'disliked' ? dislikedStyle : agnosticStyle }>{ comment.text }</p>
                           <button onClick={ () => this.handleStatus(liked, comment.id) }>Like Comment</button>
                           <button onClick={ () => this.handleStatus(disliked, comment.id) }>Dislike Comment</button>              
                         </div>

@@ -1,0 +1,16 @@
+.comment {
+  display: block;
+  width: 200px;
+  overflow: hidden;
+  white-space: wrap;
+  text-overflow: ellipsis
+}
+
+.comment:hover {
+  display: block;
+  width: 200px;
+  white-space: wrap;
+  overflow: visible;
+  height: auto;
+}
+
